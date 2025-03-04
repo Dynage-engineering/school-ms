@@ -11,6 +11,7 @@ export enum Collections {
 	Mfas = "_mfas",
 	Otps = "_otps",
 	Superusers = "_superusers",
+	AllCourses = "all_courses",
 	Courses = "courses",
 	Users = "users",
 }
@@ -86,6 +87,16 @@ export type SuperusersRecord = {
 	verified?: boolean
 }
 
+export type AllCoursesRecord = {
+	course_code?: string
+	course_name?: string
+	course_unit?: number
+	id: string
+	instructor_email: string
+	instructor_fullname?: string
+	instructor_id?: RecordIdString
+}
+
 export type CoursesRecord = {
 	assigned_to?: RecordIdString
 	course_code?: string
@@ -103,6 +114,7 @@ export enum UsersRoleOptions {
 }
 export type UsersRecord = {
 	avatar?: string
+	biodata?: string
 	created?: IsoDateString
 	email: string
 	emailVisibility?: boolean
@@ -121,6 +133,7 @@ export type ExternalauthsResponse<Texpand = unknown> = Required<ExternalauthsRec
 export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemFields<Texpand>
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
+export type AllCoursesResponse<Texpand = unknown> = Required<AllCoursesRecord> & BaseSystemFields<Texpand>
 export type CoursesResponse<Texpand = unknown> = Required<CoursesRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
@@ -132,6 +145,7 @@ export type CollectionRecords = {
 	_mfas: MfasRecord
 	_otps: OtpsRecord
 	_superusers: SuperusersRecord
+	all_courses: AllCoursesRecord
 	courses: CoursesRecord
 	users: UsersRecord
 }
@@ -142,6 +156,7 @@ export type CollectionResponses = {
 	_mfas: MfasResponse
 	_otps: OtpsResponse
 	_superusers: SuperusersResponse
+	all_courses: AllCoursesResponse
 	courses: CoursesResponse
 	users: UsersResponse
 }
@@ -155,6 +170,7 @@ export type TypedPocketBase = PocketBase & {
 	collection(idOrName: '_mfas'): RecordService<MfasResponse>
 	collection(idOrName: '_otps'): RecordService<OtpsResponse>
 	collection(idOrName: '_superusers'): RecordService<SuperusersResponse>
+	collection(idOrName: 'all_courses'): RecordService<AllCoursesResponse>
 	collection(idOrName: 'courses'): RecordService<CoursesResponse>
 	collection(idOrName: 'users'): RecordService<UsersResponse>
 }

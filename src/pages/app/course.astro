@@ -1,13 +1,19 @@
 ---
 import Layout from "@/layouts/DashboardPage.astro";
+import { getCoursesList } from "@/services/backend/userService";
+import { CourseDashboardView } from "@/components/layout/CourseDashboardView";
 
 const metadata = {
-	title: "Course | School-MS",
-	descriptionMetaTag: "This is meta description",
-	pageTitle: "This is Page Title",
+  title: "Course | School-MS",
+  descriptionMetaTag: "This is meta description",
+  pageTitle: "This is Page Title",
 };
+
+const courses = await getCoursesList();
+
+console.log("courses", courses);
 ---
 
 <Layout {...metadata}>
-	<h1>This is course page</h1>
+    <CourseDashboardView client:load />
 </Layout>

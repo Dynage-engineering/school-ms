@@ -32,6 +32,7 @@
     "astro": "^5.4.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cypress": "^14.1.0",
     "lucide-react": "^0.476.0",
     "nanostores": "^0.11.4",
     "pocketbase": "^0.25.1",

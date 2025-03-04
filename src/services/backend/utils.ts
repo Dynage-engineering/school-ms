@@ -1,5 +1,5 @@
 import { pb } from "@/services/backend/pocketbase"
-import { isLoggedInStore, $userDataStore } from "@/stores/account"
+import { isLoggedInStore } from "@/stores/account"
 import type { UsersRecord } from "./pbTypes";
 
 export async function getUserDetail(): Promise<UsersRecord | null> {
@@ -7,7 +7,6 @@ export async function getUserDetail(): Promise<UsersRecord | null> {
         try {
             const user = await pb.collection("users").getOne(pb.authStore.record.id);
             console.log("User", user);
-            // $userDataStore.set(user);
             return user;
         } catch (error) {
             console.error("Error fetching user details:", error);
@@ -19,6 +18,15 @@ export async function getUserDetail(): Promise<UsersRecord | null> {
     }
 }
 
+export const maskMail = (email: string): string => {
+    const [name, domain] = email.split("@");
+    const maskedName = name.slice(0, 3) + "*".repeat(6);
+    return `${maskedName}@${domain}`;
+}
+
+export const getUserWithId = (id: string): Promise<UsersRecord> => {
+    return pb.collection("users").getOne(id);
+}
 
 export function isLoggedIn(): boolean {
 
