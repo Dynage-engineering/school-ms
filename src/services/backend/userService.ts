@@ -1,7 +1,6 @@
 import { pb } from "./pocketbase"
 import { z } from "zod"
 import { isLoggedInStore } from '@/stores/account';
-import { getUserWithId } from "./utils";
 
 export async function userLogin(email: string, password: string) {
     try {
@@ -31,7 +30,12 @@ export async function userCourseRegistration(courseId: string) {
 
     try {
         const user = await pb.collection('users').getOne(pb.authStore.record.id);
-        const data = {};
+        const data = {
+            "courses": [
+                ...user.courses, courseId
+
+            ]
+        };
         await pb.collection('users').update(pb.authStore.record.id, data);
         console.log("Course registered successfully");
 
@@ -43,10 +47,27 @@ export async function userCourseRegistration(courseId: string) {
     // return pb.authStore.model
 }
 
-export async function userCourseUnregistration() {
+export async function userCourseUnregistration(courseId: string) {
+    try {
+        const user = await pb.collection('users').getOne(pb.authStore.record.id);
+        const data = {
+            "courses": [
+                ...user.courses.filter((course: string) => course !== courseId)
+
+            ]
+        };
+        await pb.collection('users').update(pb.authStore.record.id, data);
+        console.log("Course unregistered successfully");
+
+    } catch (error) {
+        console.error("Error unregistering course", error);
+        return null;
+
+    }
+    // return pb.authStore.model
 
 }
-export async function getCoursesList() {
+export async function getAllCoursesList() {
     try {
         const courses = await pb.collection('all_courses').getList();
         return courses;
@@ -56,6 +77,19 @@ export async function getCoursesList() {
         return null;
     }
 
+}
+export async function getUserCoursesList() {
+    try {
+        const user = await pb.collection('users').getOne(pb.authStore.record.id);
+        const courses = await pb.collection('all_courses').getList();
+        const userCourses = courses.items.filter((course) => user.courses.includes(course.id));
+        console.log({userCourses});
+        return userCourses;
+    }
+    catch (error) {
+        console.error("Error fetching courses", error);
+        return null;
+    }
 }
 export async function userCourseDetail() { }
 export async function userBiodataSubmit() { }

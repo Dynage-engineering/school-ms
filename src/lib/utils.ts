@@ -1,5 +1,5 @@
-import type { AllCoursesRecord, CoursesRecord, UsersRecord } from "@/services/backend/pbTypes"
-import { getCoursesList } from "@/services/backend/userService"
+import type { AllCoursesRecord, AllCoursesResponse, CoursesRecord, UsersRecord } from "@/services/backend/pbTypes"
+import { getAllCoursesList, getUserCoursesList } from "@/services/backend/userService"
 import { getUserDetail } from "@/services/backend/utils"
 import { type ClassValue, clsx } from "clsx"
 import type { ListResult } from "pocketbase"
@@ -12,26 +12,40 @@ export function cn(...inputs: ClassValue[]) {
 
 
 export function useUserData() {
-const [userData, setUser] = useState<UsersRecord | null>(null)
+  const [userData, setUser] = useState<UsersRecord | null>(null)
 
   useEffect(() => {
-      getUserDetail().then((user) => {
-          setUser(user)
-      })
+    getUserDetail().then((user) => {
+      setUser(user)
+    })
   }, [])
   return userData
 }
 
-export function useUserCourses() {
-  const [courses, setCourses] = useState<ListResult<AllCoursesRecord> | null>(null)
+export function useAllCourses() {
+  const [all_courses, setCourses] = useState<ListResult<AllCoursesRecord> | null>(null)
 
   useEffect(() => {
-    getCoursesList().then((course) => {
-          setCourses(course)
-      })
+    getAllCoursesList().then((course) => {
+      setCourses(course)
+    })
   }, [])
 
-  console.log({courses})
+  console.log({ all_courses })
 
-  return courses
+  return all_courses
 }
+
+
+export function useUserCourses() {
+  const [usercourses, setCourses] = useState<AllCoursesResponse<unknown>[] | null>(null)
+
+  useEffect(() => {
+    getUserCoursesList().then((course) => setCourses(course))
+  }, [])
+
+  console.log({ usercourses })
+
+  return usercourses
+}
+

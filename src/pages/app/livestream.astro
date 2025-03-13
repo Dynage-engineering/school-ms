@@ -10,8 +10,73 @@ const metadata = {
 
 <Layout {...metadata}>
   <main class="text-center flex flex-col items-center justify-center h-screen">
-    <h1>This is Public App Pages for livestreaming class</h1>
+    <h1>This is Admin-Only Pages for livestreaming class</h1>
     <p>Here you can watch live classes</p>
-    <video class="border rounded  w-[400px] lg:w-[600px] " src="https://www.w3schools.com/html/mov_bbb.mp4" controls></video>
+    <select class="border p-2 bg-gray-200 rounded my-4" id="camera-select">
+      <option value="">Select a camera</option>
+    </select>
+    <video id="camera-feed" class="border rounded  w-[400px] lg:w-[600px] " src="https://www.w3schools.com/html/mov_bbb.mp4" controls></video>
   </main>
 </Layout>
+
+
+<script>
+  let currentStream = null;
+
+// Function to stop the current video stream
+function stopStream() {
+  if (currentStream) {
+    currentStream.getTracks().forEach((track) => track.stop());
+  }
+}
+
+// Function to start the selected camera
+async function startCamera(deviceId) {
+  stopStream(); // Stop the current stream before switching
+
+  const constraints = {
+    video: { deviceId: deviceId ? { exact: deviceId } : undefined },
+    audio: false,
+  };
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    const videoElement = document.getElementById('camera-feed') as HTMLVideoElement;
+    videoElement.srcObject = stream;
+    currentStream = stream;
+  } catch (error) {
+    console.error('Error accessing the camera:', error);
+    alert('Unable to access the selected camera.');
+  }
+}
+
+// Populate the camera selection dropdown
+async function populateCameraList() {
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+  const cameraSelect = document.getElementById('camera-select');
+
+  videoDevices.forEach((device) => {
+    const option = document.createElement('option');
+    option.value = device.deviceId;
+    option.text = device.label || `Camera ${(cameraSelect as HTMLSelectElement).length + 1}`;
+    cameraSelect.appendChild(option);
+  });
+
+  // Automatically start the first camera if available
+  if (videoDevices.length > 0) {
+    startCamera(videoDevices[0].deviceId);
+  }
+}
+
+// Handle camera selection change
+document.getElementById('camera-select').addEventListener('change', (event) => {
+  const selectedDeviceId = (event.target as HTMLSelectElement).value;
+  if (selectedDeviceId) {
+    startCamera(selectedDeviceId);
+  }
+});
+
+// Initialize the camera list when the page loads
+populateCameraList();
+</script>

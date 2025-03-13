@@ -115,6 +115,7 @@ export enum UsersRoleOptions {
 export type UsersRecord = {
 	avatar?: string
 	biodata?: string
+	courses?: RecordIdString[]
 	created?: IsoDateString
 	email: string
 	emailVisibility?: boolean

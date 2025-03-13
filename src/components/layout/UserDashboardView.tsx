@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useUserCourses, useUserData } from "@/lib/utils";
+import { useAllCourses, useUserData } from "@/lib/utils";
 import type { CoursesRecord, UsersRecord } from "@/services/backend/pbTypes";
 import { maskMail } from "@/services/backend/utils";
 import { Button } from "../ui/button";
@@ -14,7 +14,7 @@ import { View } from "lucide-react";
 
 export function UserDashboardView() {
   const userData = useUserData() as UsersRecord | null;
-  const userCourses = useUserCourses() as ListResult<CoursesRecord> | null;
+  const userCourses = useAllCourses() as ListResult<CoursesRecord> | null;
 
   console.log({ userData });
 
@@ -71,7 +71,7 @@ export function UserDashboardView() {
                   Total Courses Registered:{" "}
                   <span className="font-normal text-md">
                     {" "}
-                    2{" "}
+                    {userData.courses?.length}
                   </span>
 
                 </p>
