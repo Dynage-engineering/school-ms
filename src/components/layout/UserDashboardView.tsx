@@ -10,7 +10,6 @@ import type { CoursesRecord, UsersRecord } from "@/services/backend/pbTypes";
 import { maskMail } from "@/services/backend/utils";
 import { Button } from "../ui/button";
 import type { ListResult } from "pocketbase";
-import { View } from "lucide-react";
 
 export function UserDashboardView() {
   const userData = useUserData() as UsersRecord | null;
@@ -73,23 +72,7 @@ export function UserDashboardView() {
                     {" "}
                     {userData.courses?.length}
                   </span>
-
                 </p>
-                {/* <p>
-                  Courses Registered:{" "}
-                  <span className="font-normal text-md">
-                    {" "}
-                    {userData.courses?.map((course) => (
-                      <div key={course.id}>
-                        <p>
-                          <span className="font-normal text-md">
-                            {course.course_name}
-                          </span>
-                        </p>
-                      </div>
-                    ))}
-                  </span>
-                </p> */}
 
                 <a href="/app/course">
                   <Button> Register Course </Button>
