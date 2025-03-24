@@ -1,6 +1,8 @@
 ---
 import Layout from "@/layouts/DashboardPage.astro";
 import { Button } from "@/components/ui/button"
+const verificationUrl = import.meta.env.VERIFICATION_URL || "https://schoolms.com/verify";
+
 
 
 const metadata = {
@@ -12,11 +14,11 @@ const metadata = {
 ---
 
 <Layout {...metadata}>
-	<main class="mx-auto">
-
-
-		<h1>This is Student Page</h1>
-		<Button> Upload biodata </Button>
+	<main class="flex flex-col items-center justify-center h-full">
+		<h1>Student Home Page</h1>
+		<a href=`${verificationUrl}` target="_blank">
+			<Button> Facial Recognition </Button>
+		</a>
 	</main>
 
 </Layout>
