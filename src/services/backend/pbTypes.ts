@@ -12,7 +12,9 @@ export enum Collections {
 	Otps = "_otps",
 	Superusers = "_superusers",
 	AllCourses = "all_courses",
+	Attendance = "attendance",
 	Courses = "courses",
+	Timetable = "timetable",
 	Users = "users",
 }
 
@@ -97,6 +99,15 @@ export type AllCoursesRecord = {
 	instructor_id?: RecordIdString
 }
 
+export type AttendanceRecord = {
+	created?: IsoDateString
+	id: string
+	present?: boolean
+	timetableId?: RecordIdString
+	updated?: IsoDateString
+	user?: RecordIdString
+}
+
 export type CoursesRecord = {
 	assigned_to?: RecordIdString
 	course_code?: string
@@ -104,6 +115,16 @@ export type CoursesRecord = {
 	course_unit?: number
 	created?: IsoDateString
 	id: string
+	updated?: IsoDateString
+}
+
+export type TimetableRecord = {
+	course?: RecordIdString
+	created?: IsoDateString
+	end_time?: IsoDateString
+	id: string
+	location?: string
+	start_time?: IsoDateString
 	updated?: IsoDateString
 }
 
@@ -135,7 +156,9 @@ export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemF
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
 export type AllCoursesResponse<Texpand = unknown> = Required<AllCoursesRecord> & BaseSystemFields<Texpand>
+export type AttendanceResponse<Texpand = unknown> = Required<AttendanceRecord> & BaseSystemFields<Texpand>
 export type CoursesResponse<Texpand = unknown> = Required<CoursesRecord> & BaseSystemFields<Texpand>
+export type TimetableResponse<Texpand = unknown> = Required<TimetableRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
@@ -147,7 +170,9 @@ export type CollectionRecords = {
 	_otps: OtpsRecord
 	_superusers: SuperusersRecord
 	all_courses: AllCoursesRecord
+	attendance: AttendanceRecord
 	courses: CoursesRecord
+	timetable: TimetableRecord
 	users: UsersRecord
 }
 
@@ -158,7 +183,9 @@ export type CollectionResponses = {
 	_otps: OtpsResponse
 	_superusers: SuperusersResponse
 	all_courses: AllCoursesResponse
+	attendance: AttendanceResponse
 	courses: CoursesResponse
+	timetable: TimetableResponse
 	users: UsersResponse
 }
 
@@ -172,6 +199,8 @@ export type TypedPocketBase = PocketBase & {
 	collection(idOrName: '_otps'): RecordService<OtpsResponse>
 	collection(idOrName: '_superusers'): RecordService<SuperusersResponse>
 	collection(idOrName: 'all_courses'): RecordService<AllCoursesResponse>
+	collection(idOrName: 'attendance'): RecordService<AttendanceResponse>
 	collection(idOrName: 'courses'): RecordService<CoursesResponse>
+	collection(idOrName: 'timetable'): RecordService<TimetableResponse>
 	collection(idOrName: 'users'): RecordService<UsersResponse>
 }

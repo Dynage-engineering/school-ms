@@ -1,6 +1,12 @@
+@import "flowbite/src/themes/default";
+@source "../../node_modules/flowbite";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@plugin "flowbite/plugin";
+
+
 
 @layer base {
   :root {
