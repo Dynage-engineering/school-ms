@@ -1,21 +1,17 @@
 ---
 import Layout from "@/layouts/DashboardPage.astro";
-import { Button } from "@/components/ui/button";
+import {Attendance as AttendanceComponent} from "@/components/layout/Attendance";
 
-// Make sure the user is logged in and pb.authStore.record exists.
 const metadata = {
-  title: "Student | School-MS",
+  title: "This is title",
   descriptionMetaTag: "This is meta description",
   pageTitle: "This is Page Title",
 };
 ---
+
 <Layout {...metadata}>
-  <main class="flex flex-col items-center justify-center h-full space-y-4">
-    <h1>Student Home Page</h1>
-    <Button id="uploadAvatarButton">See student Data</Button>
+  <main class="text-center flex flex-col items-center justify-center h-screen">
+    <h1>This is Admin-Only Pages for Attendance Taking class</h1>
+    <AttendanceComponent client:load />
   </main>
 </Layout>
-
-<script>
-
-</script>
