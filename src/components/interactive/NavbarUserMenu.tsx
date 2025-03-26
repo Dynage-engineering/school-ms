@@ -38,7 +38,7 @@ export default function NavbarMobileSidebar() {
           >
             <Avatar className="h-9 w-9 sm:flex">
               <AvatarImage
-                src={ `https://ui-avatars.com/api/?background=random`}
+                src={`https://ui-avatars.com/api/?background=random`}
                 alt="Avatar"
               />
               <AvatarFallback>AL</AvatarFallback>
