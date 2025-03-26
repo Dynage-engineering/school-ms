@@ -162,7 +162,7 @@ export function Attendance() {
               {/* <Button onClick={handleAttendance}></Button> */}
             </td>
             <td className="px-6 py-4">
-              <span className="px-2 py-1 text-xs font-semibold leading-tight text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100 rounded-full dark:rounded-none">
+              <span className={`px-2 py-1 text-xs font-semibold leading-tight ${marked ? "text-green-700 bg-green-100" : "text-red-700 bg-red-100" }  dark:bg-green-700 dark:text-green-100 rounded-full dark:rounded-none`}>
                 {marked ? "Present" : "Absent"}
               </span>
             </td>
@@ -242,9 +242,7 @@ export function Attendance() {
                 >
                   No, cancel
                 </button>
-                {/* <Button onClick={captureAndCompare} className="mt-2">
-                    Capture & Verify
-                  </Button> */}
+            
               </div>
               {/* )} */}
             </div>
