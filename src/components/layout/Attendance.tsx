@@ -1,6 +1,5 @@
 import { useAllCourses, useUserData } from "@/lib/utils";
 import type { UsersRecord } from "@/services/backend/pbTypes";
-import { Button } from "../ui/button";
 import { useState, useRef, useEffect } from "react";
 
 export function Attendance() {
@@ -12,6 +11,7 @@ export function Attendance() {
 
   // State & refs for capturing image
   const [capturing, setCapturing] = useState(false);
+  const [marked, setMarked] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -21,6 +21,7 @@ export function Attendance() {
   useEffect(() => {
     (async () => {
       const module = await import("face-api.js");
+      console.log(module);
       setFaceapi(module);
       // Load models once face-api is loaded
       const modelUrl = "/models";
@@ -48,6 +49,12 @@ export function Attendance() {
   // Capture a frame from the video and compare against the avatar
   const captureAndCompare = async () => {
     if (!videoRef.current || !canvasRef.current || !userData?.avatar) return;
+    setMarked(true);
+    // if (!faceapi) {
+    //   console.error("face-api not loaded yet");
+    //   alert("Face API is still loading. Please try again in a moment.");
+    //   return;
+    // }
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -86,13 +93,15 @@ export function Attendance() {
         avatarDetection.descriptor
       );
       // A threshold around 0.6 typically indicates a match
+      console.log({ distance });
       if (distance < 0.6) {
-        alert("Face verified: attendance marked.");
+        console.log("Face verified: attendance marked.");
+        setMarked(true);
       } else {
-        alert("Face verification failed. Please try again.");
+        console.log("Face verification failed. Please try again.");
       }
     } else {
-      alert("Could not detect faces properly in one or both images.");
+      console.log("Could not detect faces properly in one or both images.");
     }
   };
 
@@ -154,7 +163,7 @@ export function Attendance() {
             </td>
             <td className="px-6 py-4">
               <span className="px-2 py-1 text-xs font-semibold leading-tight text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100 rounded-full dark:rounded-none">
-                Absent
+                {marked ? "Present" : "Absent"}
               </span>
             </td>
           </tr>
@@ -212,33 +221,32 @@ export function Attendance() {
                 Are you sure you want to mark this attendance now?
               </h3>
               {/* {capturing && ( */}
-                <div className="mt-4 flex flex-col items-center fixed left-0 top-0 w-full h-full bg-gray-900 bg-opacity-90 z-50">
-                  <video
-                    ref={videoRef}
-                    className="w-64 h-64 rounded-full object-cover"
-                    autoPlay
-                  />
-                  <button
-                data-modal-hide="popup-modal"
-                type="button"
-                onClick={captureAndCompare}
-                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
-              >
-                Capture & Verify
-              </button>
-              <button
-                data-modal-hide="popup-modal"
-                type="button"
-                className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-              >
-                No, cancel
-              </button>
-                  {/* <Button onClick={captureAndCompare} className="mt-2">
+              <div className="mt-4 flex flex-col items-center fixed left-0 top-0 w-full h-full bg-gray-900 bg-opacity-90 z-50">
+                <video
+                  ref={videoRef}
+                  className="w-64 h-64 rounded-full object-cover"
+                  autoPlay
+                />
+                <button
+                  data-modal-hide="popup-modal"
+                  type="button"
+                  onClick={captureAndCompare}
+                  className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                >
+                  Capture & Verify
+                </button>
+                <button
+                  data-modal-hide="popup-modal"
+                  type="button"
+                  className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                >
+                  No, cancel
+                </button>
+                {/* <Button onClick={captureAndCompare} className="mt-2">
                     Capture & Verify
                   </Button> */}
-                </div>
+              </div>
               {/* )} */}
-              
             </div>
           </div>
         </div>
